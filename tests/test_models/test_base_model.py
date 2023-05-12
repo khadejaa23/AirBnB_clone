@@ -22,5 +22,12 @@ class TestBaseModel(unittest.TestCase):
         b = BaseModel()
         self.assertNotEqual(a.id, b.id)
 
+    def test_dict(self):
+        """Tests the to_dict() method"""
+        a = BaseModel()
+        dic = a.to_dict()
+        self.assertIsInstance(dic, dict)
+        self.assertEqual(dic["id"], a.id)
+
 if __name__ == '__main__':
     unittest.main()
