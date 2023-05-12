@@ -10,8 +10,10 @@ class TestBaseModel(unittest.TestCase):
         """Tests the initialization"""
         a = BaseModel()
         self.assertIsInstance(a, BaseModel)
-        self.assertIsNotNone(a.created_at, datetime)
-        self.assertIsNotNone(a.updated_at, datetime)
+        self.assertIsNotNone(a.created_at)
+        self.assertIsInstance(a.created_at, datetime)
+        self.assertIsNotNone(a.updated_at)
+        self.assertIsInstance(a.updated_at, datetime)
         self.assertIsNotNone(a.id)
 
     def test_uniqueId(self):
