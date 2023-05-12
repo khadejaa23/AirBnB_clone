@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """this module defines all common attributes/methods for other classes"""
 import  uuid
-import datetime from datetime
+from datetime import datetime
 
 class BaseModel:
     """This class defines a base mode"""
