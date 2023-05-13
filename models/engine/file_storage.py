@@ -1,6 +1,10 @@
 #!/usr/bin/python3
-"""Contains FileStorage class"""
+"""
+Contains FileStorage class
+
+"""
 import json
+
 from models.base_model import BaseModel
 from datetime import datetime
 
