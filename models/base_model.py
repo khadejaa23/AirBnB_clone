@@ -1,8 +1,11 @@
 #!/usr/bin/python3
-"""this module defines all common attributes/methods for other classes"""
-import  uuid
+"""
+this module defines all common attributes/methods for other classes
+"""
+import uuid
 import models
 from datetime import datetime
+
 
 class BaseModel:
     """This class defines a base mode"""
@@ -38,7 +41,7 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """Returns a dictionary containing all keys/values of __dict__ of the insnstance"""
+        """Returns a dictionary containing keys/values of __dict__ """
         dict_object = self.__dict__.copy()
         dict_object["__class__"] = self.__class__.__name__
         dict_object["created_at"] = self.created_at.isoformat()
