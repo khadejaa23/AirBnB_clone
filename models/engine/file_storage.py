@@ -4,7 +4,6 @@ import json
 from models.base_model import BaseModel
 from datetime import datetime
 
-
 class FileStorage:
     """Class serializes and deserializes JSON files"""
 
@@ -32,15 +31,14 @@ class FileStorage:
         """deserializes the JSON file to __objects(if __file_path exists)"""
         try:
             with open(self.__file_path, 'r') as f:
+                FileStorage.__objects = {}
                 json_obj_unloaded = json.load(f)
-            for key, value in json_obj_unloaded.items():
-                class_name = key.split(".")[0]
-                created_at = value['created_at']
-                updated_at = value['updated_at']
-                value[created_at] = datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S.%f')
-                value[updated_at] = datetime.strptime(updated_at, '%Y-%m-%dT%H:%M:%S.%f')
-                clss = globals()[class_name]
-                obj = clss(**value)
-                self.__objects[key] = obj
+                for key in json_obj_unloaded.keys():
+                    clss = json_obj_unloaded[key].pop("__class__", None)
+                    created_at = json_obj_unloaded[key]["created_at"]
+                    created_at = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%f")
+                    updated_at = json_obj_unloaded[key]["updated_at"]
+                    updated_at = datetime.strptime(updated_at, "%Y-%m-%dT%H:%M:%S.%f")
+                    FileStorage.__objects[key] = eval(clss)(json_obj_unloaded[key])
         except FileNotFoundError:
             pass
