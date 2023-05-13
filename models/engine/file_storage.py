@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """Contains FileStorage class"""
 import json
+from models.base_model import BaseModel
 from datetime import datetime
+
 
 class FileStorage:
     """Class serializes and deserializes JSON files"""
@@ -27,16 +29,18 @@ class FileStorage:
             json.dump(json_obj, f)
 
     def reload(self):
-        """deserializes the JSON file to __objects(only if __file_path exists)"""
+        """deserializes the JSON file to __objects(if __file_path exists)"""
         try:
             with open(self.__file_path, 'r') as f:
                 json_obj_unloaded = json.load(f)
-            for key, json_obj_unloaded in json_obj_unloaded:
-                class_name, json_obj_unloaded = key.split(".")
-                json_obj_unloaded["created_at"] = datetime.fromisoformat()
-                json_obj_unloaded["updated_at"] = datetime.fromisoformat()
+            for key, value in json_obj_unloaded.items():
+                class_name = key.split(".")[0]
+                created_at = value['created_at']
+                updated_at = value['updated_at']
+                value[created_at] = datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S.%f')
+                value[updated_at] = datetime.strptime(updated_at, '%Y-%m-%dT%H:%M:%S.%f')
                 clss = globals()[class_name]
-                obj = clss(**json_obj_unloaded)
+                obj = clss(**value)
                 self.__objects[key] = obj
-        except:
+        except FileNotFoundError:
             pass
