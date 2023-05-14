@@ -1,48 +1,59 @@
 #!/usr/bin/python3
 """
-Contains FileStorage class
+Contains the FileStorage class model
+
 
 """
 import json
 
 from models.base_model import BaseModel
-from datetime import datetime
+from models.user import User
+from models.state import State
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
-    """Class serializes and deserializes JSON files"""
+    """
+    serializes instances to a JSON file and
+    deserializes JSON file to instances
+    """
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects"""
+        """
+        Returns the dictionary __objects
+        """
         return self.__objects
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        key = obj.__class__.__name__ + "." + obj.id
-        self.__objects[key] = obj
+        """
+        sets in __objects the `obj` with key <obj class name>.id
+        """
+        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
-        """Serializes __objects to JSON file '__file_path'"""
-        json_obj = {}
-        for key, obj in self.__objects.items():
-            json_obj[key] = self.__objects[key].to_dict()
-        with open(self.__file_path, 'w') as f:
-            json.dump(json_obj, f)
+        """
+        Serialize __objects to the JSON file
+        """
+        with open(self.__file_path, mode="w") as f:
+            dict_storage = {}
+            for k, v in self.__objects.items():
+                dict_storage[k] = v.to_dict()
+            json.dump(dict_storage, f)
 
     def reload(self):
-        """deserializes the JSON file to __objects(if __file_path exists)"""
+        """
+        Deserializes the JSON file to __objects
+        -> Only IF it exists!
+        """
         try:
-            with open(self.__file_path, 'r') as f:
-                FileStorage.__objects = {}
-                json_obj_unloaded = json.load(f)
-                for key in json_obj_unloaded.keys():
-                    clss = json_obj_unloaded[key].pop("__class__", None)
-                    created_at = json_obj_unloaded[key]["created_at"]
-                    created_at = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%f")
-                    updated_at = json_obj_unloaded[key]["updated_at"]
-                    updated_at = datetime.strptime(updated_at, "%Y-%m-%dT%H:%M:%S.%f")
-                    FileStorage.__objects[key] = eval(clss)(json_obj_unloaded[key])
+            with open(self.__file_path, encoding="utf-8") as f:
+                for obj in json.load(f).values():
+                    self.new(eval(obj["__class__"])(**obj))
         except FileNotFoundError:
-            pass
+            return
