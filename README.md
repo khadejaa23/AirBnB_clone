@@ -56,4 +56,4 @@ This repository contains the following files:
 | models | state.py | Creates class `state` |
 | models | user.py | Creates class `user` |
 | models/engine/ | file_storage.py | Serializes instances to a JSON file and deserializes JSON file to instances |
-| updated | Updates an instance based on the class name and `id` by adding or updating attribute (saves the changes into a JSON file).
+| updated | Updates an instance based on the class name and `id` by adding or updating attribute (save the changes into a JSON file).
