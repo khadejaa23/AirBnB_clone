@@ -4,8 +4,9 @@
 ## Project Description
 This is the first part of the AirBnB clone project where we worked on the backend of the project whiles interfacing it with a console application with the help of the cmd module in python.
 
-Data (python objects) generated are stored in a json file and can be accessed with the help of the json module in python## CONCEPTS LEARNT
+Data (python objects) generated are stored in a json file and can be accessed with the help of the json module in python
 
+## CONCEPTS LEARNT
 -    How to create a Python package
 -    How to create a command interpreter in Python using the `cmd` module
 -    What is Unit testing and how to implement it in a large project
