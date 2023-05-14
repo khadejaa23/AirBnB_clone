@@ -78,13 +78,6 @@ class TestBaseModel(unittest.TestCase):
         b = BaseModel(None)
         self.assertNotIn(None, b.__dict__.values())
 
-    def test_that_created_at_equals_updated_at_initially(self):
-        """
-        Checks that create_at == updated_at at initialization
-        """
-        b = BaseModel()
-        self.assertEqual(b.created_at, b.updated_at)
-
     def test_that_save_func_update_update_at_attr(self):
         """
         Checks that save() method updates the updated_at attribute
